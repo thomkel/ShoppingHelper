@@ -1,0 +1,15 @@
+<h1>Listing food_feeds</h1>
+
+
+    <% @food_feeds.each do |food_feed| %>
+        <p><b><%= food_feed.title %></b></p>
+        <p><%= food_feed.description %></p>
+        <p><%= food_feed.url %></p> 
+        <p><%= image_tag food_feed.image %></p>
+        <p><%= link_to 'Edit', edit_food_feed_path(food_feed) %></p>
+        <p><%= link_to 'Destroy', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+    <% end %>
+
+<br>
+
+<%= link_to 'New Food feed', new_food_feed_path %>

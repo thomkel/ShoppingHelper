@@ -1,0 +1,2 @@
+module FoodFeedsHelper
+end

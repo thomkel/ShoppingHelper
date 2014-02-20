@@ -1,0 +1,12 @@
+<h1>Listing meals</h1>
+
+    <% @meals.each do |meal| %>
+        <p><b><%= meal.name %></b></p>
+        <p><%= meal.description %></p>
+        <p><%= image_tag meal.image %></p>
+        <p><%= link_to 'Edit', edit_meal_path(meal) %></p>
+        <p><%= link_to 'Destroy', meal, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+    <% end %>
+
+
+<%= link_to 'New Meal', new_meal_path %>
