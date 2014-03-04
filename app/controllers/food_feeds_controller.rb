@@ -1,10 +1,30 @@
 class FoodFeedsController < ApplicationController
   before_action :set_food_feed, only: [:show, :edit, :update, :destroy]
 
+  before_action :require_login, :except => [:home, :login]
+  before_action :identify_user
+
+  # add option to see meals others share and save recipes!
+
+  def identify_user
+    user = User.find_by(id: session[:user_id])
+    if user
+      @username = user.username
+    end
+  end
+
+  def require_login
+    if session[:user_id].blank?
+      render "welcome", notice: "You must login or sign up!"
+    end
+  end
+
+
+
   # GET /food_feeds
   # GET /food_feeds.json
-  def index
-    @food_feeds = FoodFeed.all
+  def index 
+    @food_feeds = FoodFeed.where(:create_user_id => [session[:users_followed], session[:user_id]]).order(created_at: :desc)
   end
 
   # GET /food_feeds/1
@@ -26,13 +46,14 @@ class FoodFeedsController < ApplicationController
   def create
     @food_feed = FoodFeed.new(food_feed_params)
 
+    @food_feed.feed_type = params[:feed_type]
+    @food_feed.create_user_id = session[:user_id]
+
     respond_to do |format|
       if @food_feed.save
         format.html { redirect_to @food_feed, notice: 'Food feed was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @food_feed }
       else
         format.html { render action: 'new' }
-        format.json { render json: @food_feed.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -42,11 +63,11 @@ class FoodFeedsController < ApplicationController
   def update
     respond_to do |format|
       if @food_feed.update(food_feed_params)
+        @food_feed.feed_type = params[:feed_type]
+        @food_feed.save
         format.html { redirect_to @food_feed, notice: 'Food feed was successfully updated.' }
-        format.json { head :no_content }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @food_feed.errors, status: :unprocessable_entity }
       end
     end
   end

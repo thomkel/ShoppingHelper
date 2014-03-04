@@ -1,6 +1,22 @@
 class MealsController < ApplicationController
   before_action :set_meal, only: [:show, :edit, :update, :destroy]
 
+  before_action :require_login, :except => [:home, :login]
+  before_action :identify_user
+
+  def identify_user
+    user = User.find_by(id: session[:user_id])
+    if user
+      @username = user.username
+    end
+  end
+
+  def require_login
+    if session[:user_id].blank?
+      redirect_to root_url, notice: "You must login or sign up!"
+    end
+  end
+
   # GET /meals
   # GET /meals.json
   def index
@@ -10,6 +26,9 @@ class MealsController < ApplicationController
   # GET /meals/1
   # GET /meals/1.json
   def show
+
+    @ingreds = Recipe.where(:meal_id => params[:id])
+
   end
 
   # GET /meals/new
@@ -19,6 +38,7 @@ class MealsController < ApplicationController
 
   # GET /meals/1/edit
   def edit
+    @recipes = Recipe.where(:meal_id => params[:id])
   end
 
   # POST /meals
@@ -37,16 +57,20 @@ class MealsController < ApplicationController
     end
   end
 
+  def edit_ingreds
+    @recipes = Recipe.where(:meal_id => params[:id])
+
+    
+  end
+
   # PATCH/PUT /meals/1
   # PATCH/PUT /meals/1.json
   def update
     respond_to do |format|
       if @meal.update(meal_params)
-        format.html { redirect_to @meal, notice: 'Meal was successfully updated.' }
-        format.json { head :no_content }
+        format.html { redirect_to "/ingreds/#{@meal.id}", notice: 'Meal was successfully updated.' }
       else
         format.html { render action: 'edit' }
-        format.json { render json: @meal.errors, status: :unprocessable_entity }
       end
     end
   end

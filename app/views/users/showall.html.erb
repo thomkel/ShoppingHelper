@@ -1,0 +1,23 @@
+<h1>Users</h1>
+<br>
+
+<% if !@follows.blank? %>
+
+<h3>Users you follow</h3><br>
+
+	<% @follows.each do |follow| %>
+		<% user = User.find_by(:id => follow.leader_id) %>
+		<p><strong><%= user.username %></strong></p>
+		<p><%= user.first_name + " " + user.last_name %></p>
+		<br><br><br>
+	<% end %>
+<% end %>
+
+<h3>Users you don't follow</h3><br>
+
+<% @users.each do |user| %>
+	<p><strong><%= user.username %></strong></p>
+	<p><%= user.first_name + " " + user.last_name %></p>
+	<%= button_to "Follow User", "/follow?userid=#{user.id}", :method => :post %>
+	<br><br><br>
+<% end %>

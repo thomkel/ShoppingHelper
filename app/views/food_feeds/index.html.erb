@@ -1,15 +1,29 @@
-<h1>Listing food_feeds</h1>
+<h1>Food Feed</h1>
+<p><%= link_to 'Post New Food Feed', new_food_feed_path %></p><br>
 
 
     <% @food_feeds.each do |food_feed| %>
-        <p><b><%= food_feed.title %></b></p>
+    	<% if food_feed.create_user_id != session[:user_id] %>
+    		<p><%= User.find_by(:id => food_feed.create_user_id).username %> posted:</p>
+    	<% end %>
+        <% if food_feed.feed_type == "video" %>
+        	<p><strong><%= food_feed.title %></strong></p>
+        	<p><iframe width="420" height="325" src="<%= food_feed.url %>" allowfullscreen></iframe></p>
+        <% elsif food_feed.feed_type == "image" %>
+        	<p><strong><%= food_feed.title %></strong></p>
+        	<p><%= image_tag food_feed.image, size: "420x325" %></p>        
+        <% else %> 
+        	<p><%= link_to food_feed.title, food_feed.url %></p>
+        	<p><%= image_tag food_feed.image, size: "420x325" %></p>
+        <% end %>
         <p><%= food_feed.description %></p>
-        <p><%= food_feed.url %></p> 
-        <p><%= image_tag food_feed.image %></p>
-        <p><%= link_to 'Edit', edit_food_feed_path(food_feed) %></p>
-        <p><%= link_to 'Destroy', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+        <% if food_feed.create_user_id == session[:user_id] %>
+	        <p><%= link_to 'Edit', edit_food_feed_path(food_feed) %></p>
+	        <p><%= link_to 'Destroy', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+	   	<% end %>
+	   	<br><br>
     <% end %>
 
 <br>
 
-<%= link_to 'New Food feed', new_food_feed_path %>
+<%= link_to 'Post New Food Feed', new_food_feed_path %>

@@ -1,18 +1,17 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
-  <%= @meal.name %>
+  <strong><%= @meal.name + " - " + @meal.description %></strong>
+<p>
+<ul>
+	<% @ingreds.each do |ingred| %>
+		<li><%= Ingredient.find_by(:id => ingred.ingred_id).name %></li>
+	<% end %>
+</ul>
 </p>
 
 <p>
-  <strong>Description:</strong>
-  <%= @meal.description %>
-</p>
-
-<p>
-  <strong>Image:</strong>
-  <%= @meal.image %>
+  <%= image_tag @meal.image %>
 </p>
 
 <%= link_to 'Edit', edit_meal_path(@meal) %> |

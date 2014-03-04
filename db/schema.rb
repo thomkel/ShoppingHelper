@@ -11,7 +11,12 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140220034702) do
+ActiveRecord::Schema.define(version: 20140302215357) do
+
+  create_table "follows", force: true do |t|
+    t.integer "leader_id"
+    t.integer "follower_id"
+  end
 
   create_table "food_feeds", force: true do |t|
     t.string   "title"
@@ -20,10 +25,23 @@ ActiveRecord::Schema.define(version: 20140220034702) do
     t.string   "image"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.string   "feed_type"
+    t.integer  "create_user_id"
   end
 
   create_table "ingredients", force: true do |t|
     t.string "name"
+  end
+
+  create_table "list_items", force: true do |t|
+    t.integer "ingred_id"
+    t.integer "list_id"
+  end
+
+  create_table "lists", force: true do |t|
+    t.string   "list_name"
+    t.datetime "created_at"
+    t.datetime "updated_at"
   end
 
   create_table "meals", force: true do |t|
@@ -38,6 +56,14 @@ ActiveRecord::Schema.define(version: 20140220034702) do
     t.integer "meal_id"
     t.integer "ingred_id"
     t.string  "measure"
+  end
+
+  create_table "users", force: true do |t|
+    t.string "username"
+    t.string "email"
+    t.string "password_digest"
+    t.string "first_name"
+    t.string "last_name"
   end
 
 end

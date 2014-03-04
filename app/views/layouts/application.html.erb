@@ -30,6 +30,14 @@
         <li><a href="/foodfeed">Food Feed</a></li>
         <li><a href="/meals">Recipes</a></li>
         <li><a href="/lists">Lists</a></li>
+        <% if session[:user_id].blank? %>
+          <li><a href="/users">Sign Up</a></li>
+          <li><a href="/sessions">Log In</a></li> 
+        <% else %>
+          <li><a href="/findusers">Users</a></li>
+          <li><a href="/users/<%= session[:user_id] %>">Profile</a></li>          
+          <li><a href="/endsession">Log Out</a></li>
+        <% end %>
       </ul>
     </div>
   </nav>
@@ -43,8 +51,11 @@
     <% end %>
 
     <br><br><br>
+    <%= notice %>
 
 <%= yield %>
+
+<br><br><br>
 
 </body>
 </html>
