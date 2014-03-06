@@ -1,18 +1,20 @@
 <h1>Edit Ingredients</h1>
 
+
 <% @recipes.each do |recipe| %>
 	<% @ingred = Ingredient.find_by(:id => recipe.ingred_id) %>
-	<div class="field">
-	  <%= label_tag :name %><br>
-	  <%= text_field_tag :name, @ingred.name %>
-	</div>	
-	<div class="field">
-	  <%= label_tag :measure %><br>
-	  <%= text_field_tag :measure, recipe.measure %>
-	</div>	
-	<br>
+
+	<%= form_tag "/recipes/#{recipe.id}", :method => 'patch' do %>
+		<strong><%= @ingred.name %>:</strong>
+		<div class="field">
+		  <%= label_tag :measure %>
+		  <%= text_field_tag :measure, recipe.measure %>
+		</div>	
+		<div class="actions">
+			<%= submit_tag "Save Changes" %>
+		</div>
+		<br>
+	<% end %>
 <% end %>	
 
-<div class="actions">
-<%= submit_tag %>
-</div>
+<%= link_to "Add more ingredients", "/meals/#{params[:id]}/add" %>

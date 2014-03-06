@@ -68,11 +68,47 @@ class MealsController < ApplicationController
   def update
     respond_to do |format|
       if @meal.update(meal_params)
-        format.html { redirect_to "/ingreds/#{@meal.id}", notice: 'Meal was successfully updated.' }
+        format.html { redirect_to "/recipes/#{@meal.id}", notice: 'Meal was successfully updated.' }
       else
         format.html { render action: 'edit' }
       end
     end
+  end
+
+  def update_recipe
+    recipe = Recipe.find_by(:id => params[:id])
+    recipe.measure = params[:measure]
+    recipe.save
+
+    redirect_to meals_path, notice: "Recipe successfully updated"
+  end
+
+  def add_ingreds
+  end
+
+  def save_new_ingreds
+    ingreds = [ params[:ingred1], params[:ingred2], params[:ingred3], 
+      params[:ingred4], params[:ingred5] ]
+    measures = [ params[:measure1], params[:measure2], params[:measure3], 
+      params[:measure4], params[:measure5] ]
+
+    for i in 0..4
+      if ingreds[i].blank?
+        break
+      end
+
+      ingred = Ingredient.new
+      ingred.name = ingreds[i]
+      ingred.save
+
+      recipe = Recipe.new
+      recipe.ingred_id = ingred.id
+      recipe.meal_id = params[:id]
+      recipe.measure = measures[i]
+      recipe.save
+    end
+
+    redirect_to meals_path, notice: "Recipe successfully updated"  
   end
 
   # DELETE /meals/1

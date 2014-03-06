@@ -5,6 +5,7 @@ class FoodFeedsController < ApplicationController
   before_action :identify_user
 
   # add option to see meals others share and save recipes!
+  # implement pagination .limit(#).offset(#)
 
   def identify_user
     user = User.find_by(id: session[:user_id])
