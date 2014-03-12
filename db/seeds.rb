@@ -266,19 +266,19 @@ end
 List.destroy_all
 
 list = List.new
-list.list_name = "Pho List"
+list.name = "Pho List"
 list.user_id = thom_id
 list.save
 
 list = List.new
-list.list_name = "Bahn Mi List"
+list.name = "Bahn Mi List"
 list.user_id = gracie_id
 list.save
 
-pholist = List.find_by(:list_name => "Pho List")
+pholist = List.find_by(:name => "Pho List")
 pho_id = pholist.id
 
-bahnlist = List.find_by(:list_name => "Bahn Mi List")
+bahnlist = List.find_by(:name => "Bahn Mi List")
 bahn_id = bahnlist.id
 
 #create List Items
