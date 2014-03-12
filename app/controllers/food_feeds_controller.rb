@@ -3,9 +3,18 @@ class FoodFeedsController < ApplicationController
 
   before_action :require_login, :except => [:home, :login]
   before_action :identify_user
+  before_action :validate_creater, only: [:edit, :update, :destroy]
 
-  # add option to see meals others share and save recipes!
   # implement pagination .limit(#).offset(#)
+
+  def validate_creater
+
+    @food_feed = FoodFeed.find_by(:id => params[:id])
+
+    if @food_feed.create_user_id != session[:user_id]
+      redirect_to root_url, notice: "You are not the creater!"
+    end
+  end
 
   def identify_user
     user = User.find_by(id: session[:user_id])
@@ -25,7 +34,7 @@ class FoodFeedsController < ApplicationController
   # GET /food_feeds
   # GET /food_feeds.json
   def index 
-    @food_feeds = FoodFeed.where(:create_user_id => [session[:users_followed], session[:user_id]]).order(created_at: :desc)
+    @food_feeds = FoodFeed.where(:create_user_id => [session[:users_followed], session[:user_id]]).order("created_at desc")
   end
 
   # GET /food_feeds/1

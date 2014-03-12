@@ -41,6 +41,15 @@ class UsersController < ApplicationController
     end
   end
 
+  def delete_follows
+    @follows = Follow.where(:follower_id => session[:user_id])
+
+    @follows.find_by(:leader_id => params[:id]).destroy
+
+    redirect_to "/findusers", notice: "No longer following #{User.find_by(:id => params[:id]).username}"
+
+  end
+
   def create
     user = User.new
     user.first_name = params[:first_name]

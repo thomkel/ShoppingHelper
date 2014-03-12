@@ -1,25 +1,12 @@
-<h1>Listing lists</h1>
+<h1>Lists</h1>
 
-<table>
-  <thead>
-    <tr>
-      <th></th>
-      <th></th>
-      <th></th>
-    </tr>
-  </thead>
 
-  <tbody>
-    <% @lists.each do |list| %>
-      <tr>
-        <td><%= link_to list.list_name, "/lists/#{list.id}" %></td>
-        <td><%= link_to 'Show', list %></td>
-        <td><%= link_to 'Edit', edit_list_path(list) %></td>
-        <td><%= link_to 'Destroy', list, method: :delete, data: { confirm: 'Are you sure?' } %></td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+<% @lists.each do |list| %>
+    <p><strong><%= link_to list.list_name, "/lists/#{list.id}" %></strong></p>
+    <p><%= link_to 'Show', list %> | 
+    <%= link_to 'Edit', edit_list_path(list) %> | 
+    <%= link_to 'Destroy', list, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+<% end %>
 
 <br>
 

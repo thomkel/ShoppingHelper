@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20140302215357) do
+ActiveRecord::Schema.define(version: 20140307015345) do
 
   create_table "follows", force: true do |t|
     t.integer "leader_id"
@@ -42,6 +42,7 @@ ActiveRecord::Schema.define(version: 20140302215357) do
     t.string   "list_name"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "meals", force: true do |t|
@@ -50,6 +51,7 @@ ActiveRecord::Schema.define(version: 20140302215357) do
     t.string   "image"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "user_id"
   end
 
   create_table "recipes", force: true do |t|

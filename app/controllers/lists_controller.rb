@@ -3,6 +3,18 @@ class ListsController < ApplicationController
 
   before_action :require_login, :except => [:home, :login]
   before_action :identify_user
+  before_action :validate_creater, only: [:edit, :update, :destroy]
+
+  # implement pagination .limit(#).offset(#)
+
+  def validate_creater
+
+    @list = List.find_by(:id => params[:id])
+
+    if @list.user_id != session[:user_id]
+      redirect_to root_url, notice: "You are not the creater!"
+    end
+  end
 
   def identify_user
     user = User.find_by(id: session[:user_id])
@@ -20,7 +32,7 @@ class ListsController < ApplicationController
   # GET /lists
   # GET /lists.json
   def index
-    @lists = List.all
+    @lists = List.where(:user_id => session[:user_id]).order("created_at desc")
   end
 
   # GET /lists/1
@@ -43,30 +55,53 @@ class ListsController < ApplicationController
   # POST /lists
   # POST /lists.json
   def create
-    @list = List.new(list_params)
+    @list = List.new
+    @list.list_name = params[:list_name]
+    @list.user_id = session[:user_id]
 
-    respond_to do |format|
-      if @list.save
-        format.html { redirect_to @list, notice: 'List was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @list }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
+
+    if @list.save
+      redirect_to "/addmeals/#{@list.id}", notice: 'List was successfully created.'
+    else
+      render action: 'new' 
+    end
+  end
+
+  def add_meals
+    @list = List.find_by(:id => params[:id])
+    @list_items = ListItem.where(:list_id => @list.id)
+    @meals = Meal.where(:user_id => session[:user_id])
+  end
+
+  def add_meal_to_list
+    #need list
+    list = List.find_by(:id => params[:id])
+    list_items = ListItem.where(:list_id => list.id)
+
+    recipes = Recipe.where(:meal_id => params[:meal])
+
+    recipes.each do |recipe|
+      ingred = Ingredient.find_by(:id => recipe.ingred_id)
+
+      if list_items.find_by(:ingred_id => ingred.id).blank?
+        list_item = ListItem.new
+        list_item.list_id = list.id
+        list_item.ingred_id = ingred.id
+        list_item.save
       end
     end
+
+    redirect_to "/addmeals/#{list.id}"
+
   end
 
   # PATCH/PUT /lists/1
   # PATCH/PUT /lists/1.json
   def update
-    respond_to do |format|
-      if @list.update(list_params)
-        format.html { redirect_to @list, notice: 'List was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @list.errors, status: :unprocessable_entity }
-      end
+    if @list.update(list_params)
+      redirect_to "/addmeals/#{@list.id}", notice: 'List was successfully updated.'
+    else
+      render action: 'edit' 
     end
   end
 
@@ -74,10 +109,7 @@ class ListsController < ApplicationController
   # DELETE /lists/1.json
   def destroy
     @list.destroy
-    respond_to do |format|
-      format.html { redirect_to lists_url }
-      format.json { head :no_content }
-    end
+    redirect_to lists_url 
   end
 
   private

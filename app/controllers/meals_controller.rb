@@ -3,6 +3,19 @@ class MealsController < ApplicationController
 
   before_action :require_login, :except => [:home, :login]
   before_action :identify_user
+  before_action :validate_creater, only: [:edit, :update, :destroy, :edit_ingreds, 
+      :add_ingreds, :save_new_ingreds, :update_recipe ]
+
+  # implement pagination .limit(#).offset(#)
+
+  def validate_creater
+
+    @meal = Meal.find_by(:id => params[:id])
+
+    if @meal.user_id != session[:user_id]
+      redirect_to root_url, notice: "You are not the creater!"
+    end
+  end
 
   def identify_user
     user = User.find_by(id: session[:user_id])
@@ -20,7 +33,9 @@ class MealsController < ApplicationController
   # GET /meals
   # GET /meals.json
   def index
-    @meals = Meal.all
+    @meals = Meal.where(:user_id => session[:user_id]).order("created_at desc")
+
+    @friend_meals = Meal.where(:user_id => session[:users_followed])
   end
 
   # GET /meals/1
@@ -45,14 +60,13 @@ class MealsController < ApplicationController
   # POST /meals.json
   def create
     @meal = Meal.new(meal_params)
+    @meal.user_id = session[:user_id]
 
     respond_to do |format|
       if @meal.save
-        format.html { redirect_to @meal, notice: 'Meal was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @meal }
+        format.html { redirect_to "/meals/#{@meal.id}/add", notice: 'Meal was successfully created.' }
       else
         format.html { render action: 'new' }
-        format.json { render json: @meal.errors, status: :unprocessable_entity }
       end
     end
   end
@@ -88,24 +102,37 @@ class MealsController < ApplicationController
 
   def save_new_ingreds
     ingreds = [ params[:ingred1], params[:ingred2], params[:ingred3], 
-      params[:ingred4], params[:ingred5] ]
+      params[:ingred4], params[:ingred5], params[:ingred6], params[:ingred7],
+        params[:ingred8], params[:ingred9], params[:ingred10] ]
     measures = [ params[:measure1], params[:measure2], params[:measure3], 
-      params[:measure4], params[:measure5] ]
+      params[:measure4], params[:measure5], params[:measure6], params[:measure7],
+        params[:measure8], params[:measure9], params[:measure10] ]
 
-    for i in 0..4
+    for i in 0..9
       if ingreds[i].blank?
         break
       end
 
-      ingred = Ingredient.new
-      ingred.name = ingreds[i]
-      ingred.save
+      #check if Ingredient already in database
+      #if not, create new ingredient
 
-      recipe = Recipe.new
-      recipe.ingred_id = ingred.id
-      recipe.meal_id = params[:id]
-      recipe.measure = measures[i]
-      recipe.save
+      ingredname = Ingredient.find_by(:name => ingreds[i])
+
+      if ingredname.blank?
+        @ingred = Ingredient.new
+        @ingred.name = ingreds[i].downcase
+        @ingred.save
+
+      else
+        @ingred = ingredname
+
+      end
+        recipe = Recipe.new
+        recipe.ingred_id = @ingred.id
+        recipe.meal_id = params[:id]
+        recipe.measure = measures[i]
+        recipe.save
+
     end
 
     redirect_to meals_path, notice: "Recipe successfully updated"  

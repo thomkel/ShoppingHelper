@@ -166,13 +166,17 @@ end
 
 all_meal_data = [ { :name => "Viet Hapa Phol",
                  :description => "Vietnamese Beef Noodle Soup",
-                 :image => "http://img08.foodily.net/img/620x620/ff48f9f59395.jpg"
+                 :image => "http://img08.foodily.net/img/620x620/ff48f9f59395.jpg",
+                 :user_id => thom_id
                 },
                 { :name => "Bahn Mi",
                   :description => "Vietnamese Sandwish",
-                  :image => "http://img06.foodily.net/img/620x620/55d5bca750c7.jpg"
+                  :image => "http://img06.foodily.net/img/620x620/55d5bca750c7.jpg",
+                  :user_id => gracie_id
                 }
             ]
+
+
 
 Meal.destroy_all
 all_meal_data.each do |meal_info|
@@ -180,6 +184,7 @@ all_meal_data.each do |meal_info|
   f.name = meal_info[:name]
   f.description = meal_info[:description]
   f.image = meal_info[:image]
+  f.user_id = meal_info[:user_id]
   f.save
 end
 
@@ -262,10 +267,12 @@ List.destroy_all
 
 list = List.new
 list.list_name = "Pho List"
+list.user_id = thom_id
 list.save
 
 list = List.new
 list.list_name = "Bahn Mi List"
+list.user_id = gracie_id
 list.save
 
 pholist = List.find_by(:list_name => "Pho List")

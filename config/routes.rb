@@ -27,5 +27,10 @@ ShoppingHelper::Application.routes.draw do
 
   get "/recipes/:id" => "meals#edit_ingreds"
   patch "recipes/:id" => "meals#update_recipe"
+
+  delete "/users/follows/:id" => "users#delete_follows"
+
+  get "/addmeals/:id" => "lists#add_meals"
+  post "/addmeals/:id" => "lists#add_meal_to_list"
   
 end

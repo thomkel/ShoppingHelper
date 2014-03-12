@@ -1,7 +1,7 @@
 <h1>Add Ingredients</h1>
 
 <%= form_tag "/meals/#{params[:id]}/add", :method => 'post' do %>
-	<% for i in 1..5 %>
+	<% for i in 1..10 %>
 		<% ingredsym = "ingred" + i.to_s %>
 		<% measuresym = "measure" + i.to_s %>
 

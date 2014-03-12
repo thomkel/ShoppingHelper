@@ -11,6 +11,10 @@
     </div>
   <% end %>
 
+  <div class="field">
+    <%= label_tag :list_name %><br>
+    <%= text_field_tag :list_name, "#{@list.list_name}" %>
+  </div>
   <div class="actions">
     <%= f.submit %>
   </div>
