@@ -248,7 +248,7 @@ bahnmeal_id = bahnmeal.id
 all_pho_data.each do |ingred_info|
   f = Recipe.new
   ingred = Ingredient.find_by(:name => ingred_info[:name])
-  f.ingredient_id = ingred.id
+  f.ingred_id = ingred.id
   f.meal_id = phomeal_id
   f.save
 end
@@ -256,7 +256,7 @@ end
 all_bahn_data.each do |ingred_info|
   f = Recipe.new
   ingred = Ingredient.find_by(:name => ingred_info[:name])
-  f.ingredient_id = ingred.id
+  f.ingred_id = ingred.id
   f.meal_id = bahnmeal_id
   f.save
 end
