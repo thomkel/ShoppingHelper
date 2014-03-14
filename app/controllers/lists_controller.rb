@@ -1,3 +1,6 @@
+require 'open-uri'
+require 'json'
+
 class ListsController < ApplicationController
   before_action :set_list, only: [:show, :edit, :update, :destroy]
 
@@ -41,6 +44,46 @@ class ListsController < ApplicationController
     listid = params[:id]
     @list = List.find_by(:id => listid)
     @listitems = ListItem.where(:list_id => listid)
+
+    if !params[:address].blank? & !params[:city].blank? & !params[:state].blank?
+      origin = params[:origin]
+      address = params[:address]
+      city = params[:city]
+      state = params[:state]
+
+      data = findstore(origin, address, city, state)
+
+      @duration = data["routes"].first["legs"].first["duration"].values_at("text")
+      @distance = data["routes"].first["legs"].first["distance"].values_at("text")
+
+      steps = data["routes"].first["legs"].first["steps"]
+
+      steps_size = (steps.length - 1)
+      @instructs = []
+
+      for i in 0..steps_size
+        newstep = steps[i].values_at("html_instructions").to_s
+        newstep = newstep.gsub("[", "")
+        newstep = newstep.gsub("]", "")
+        newstep = newstep.gsub('"', "")
+
+        newstep = CGI.escapeHTML(newstep)
+        newstep = newstep.gsub(/&lt;[^&]*&gt;/, '')
+        newstep = newstep.gsub(/&#39;/, "'")
+
+        @instructs.push(newstep)
+      end
+
+      @duration = @duration.to_s
+      @duration = @duration.gsub("[", "")
+      @duration = @duration.gsub("]", "")
+      @duration = @duration.gsub('"', "")
+
+      @distance = @distance.to_s
+      @distance = @distance.gsub("[", "")
+      @distance = @distance.gsub("]", "")
+      @distance = @distance.gsub('"', "")
+    end
   end
 
   # GET /lists/new
@@ -56,7 +99,7 @@ class ListsController < ApplicationController
   # POST /lists.json
   def create
     @list = List.new
-    @list.list_name = params[:list_name]
+    @list.name = params[:name]
     @list.user_id = session[:user_id]
 
 
@@ -83,15 +126,32 @@ class ListsController < ApplicationController
     recipes.each do |recipe|
       ingred = Ingredient.find_by(:id => recipe.ingred_id)
 
-      if list_items.find_by(:ingred_id => ingred.id).blank?
+      if list_items.find_by(:ingredient_id => ingred.id).blank?
         list_item = ListItem.new
         list_item.list_id = list.id
-        list_item.ingred_id = ingred.id
+        list_item.ingredient_id = ingred.id
         list_item.save
       end
     end
 
     redirect_to "/addmeals/#{list.id}"
+
+  end
+
+  def findstore(base, address, city, state)
+    origin = base
+    origin = origin.gsub(' ', '+')
+
+    destination = address + "+" + city + "+" + state
+    destination = destination.gsub(' ', '+')
+
+    url = "http://maps.googleapis.com/maps/api/directions/json?origin=#{origin}&destination=#{destination}&sensor=false"
+
+    url = url.gsub("\n", '')
+
+    json_data = open(url).read
+    data = JSON.parse(json_data)
+    return data
 
   end
 

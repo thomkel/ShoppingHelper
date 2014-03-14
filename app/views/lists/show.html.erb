@@ -1,12 +1,50 @@
-<h1><%= @list.list_name %></h1>
+<h1><%= @list.name %></h1>
 
 <ul>
 	<% @listitems.each do |item| %>
-		<li><%= Ingredient.find_by(:id => item.ingred_id).name %></li>
+		<li><%= Ingredient.find_by(:id => item.ingredient_id).name %></li>
 	<% end %>
 </ul>
 
-
-
 <%= link_to 'Edit', edit_list_path(@list) %> |
 <%= link_to 'Back', lists_path %>
+
+<h3>Directions to Store</h3>
+
+<%= @duration %>
+<%= @distance %>
+<br><br>
+
+<% count = 1 %>
+
+<% @instructs.each do |step| %>
+	<%= count.to_s + ". " + step %>
+	<br>
+	<% count = count + 1 %>
+<% end %>
+<br>
+
+<%= form_tag "/lists/#{@list.id}", method: :post do %>
+  <div class="field">
+    <%= label_tag :origin %><br>
+    <input type="radio" name=<%= :origin %> value="1800 West Lawrence Avenue Chicago IL 60640" checked>Mariano's-Ravenswood<br>
+    <input type="radio" name=<%= :origin %> value="3350 N Western Ave Chicago IL 60618">Mariano's-Roscoe Village<br>
+    <input type="radio" name=<%= :origin %> value="3300 N. Ashland Ave Chicago  Illinois  60657">Whole Foods-Lakeview
+  </div><br>
+  <div class="field">
+    <%= label_tag :address %><br>
+    <%= text_field_tag :address %>
+  </div>
+  <div class="field">
+    <%= label_tag :city %><br>
+    <%= text_area_tag :city %>
+  </div>
+  <div class="field">
+    <%= label_tag :state %><br>
+    <%= text_field_tag :state %>
+  </div><br>
+  <div class="actions">
+    <%= submit_tag "Find directions!" %>
+  </div>
+<% end %>
+

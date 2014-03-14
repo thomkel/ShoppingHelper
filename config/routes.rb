@@ -32,5 +32,7 @@ ShoppingHelper::Application.routes.draw do
 
   get "/addmeals/:id" => "lists#add_meals"
   post "/addmeals/:id" => "lists#add_meal_to_list"
+
+  post "lists/:id" => "lists#show"
   
 end
