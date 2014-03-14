@@ -1,5 +1,5 @@
 class List < ActiveRecord::Base
 
-	has_one :users
+	belongs_to :user
 	has_many :list_items
 end

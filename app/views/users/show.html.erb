@@ -4,3 +4,8 @@
 <p>Last Name: <%= @user.last_name %></p>
 <p>Email: <%= @user.email %></p>
 
+<% if @user.id == session[:user_id] %>
+	<%= link_to "Edit Info", edit_user_path %>
+<% end %>
+
+

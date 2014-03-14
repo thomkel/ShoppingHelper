@@ -15,6 +15,8 @@ class UsersController < ApplicationController
     follow.follower_id = session[:user_id]
     follow.save
 
+    session[:users_followed].push(follow.leader_id)
+
     redirect_to "/findusers", notice: "You are now following #{User.find_by(:id => params[:userid]).username}"
   end
 
@@ -46,6 +48,8 @@ class UsersController < ApplicationController
 
     @follows.find_by(:leader_id => params[:id]).destroy
 
+    session[:users_followed].delete(params[:id].to_i)
+
     redirect_to "/findusers", notice: "No longer following #{User.find_by(:id => params[:id]).username}"
 
   end
@@ -63,8 +67,23 @@ class UsersController < ApplicationController
     if user.errors.any?
       redirect_to "/users", notice: user.errors.full_messages
     else
-      session[:user_id] = user.id
-      redirect_to root_url, notice: "Thanks for joining!"
+      redirect_to "/sessions", notice: "Thanks for joining! Please Sign In!"
+    end
+  end
+
+  def edit
+  end
+
+  def update
+    @user = User.find_by(:id => session[:user_id])
+    if params[:first_name].blank? || params[:last_name].blank?
+      redirect_to edit_user_path(@user.id), notice: "Please enter a first name and last name"
+    else
+      @user.first_name = params[:first_name]
+      @user.last_name = params[:last_name]
+      @user.save
+
+      redirect_to user_path(@user.id), notice: "Update successful!"
     end
   end
 end

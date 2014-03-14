@@ -1,6 +1,5 @@
 class ListItem < ActiveRecord::Base
 
-	has_many :ingredients, through: :ingred_id
-	has_many :lists, through: :list_id
-	
+	has_many :ingredients
+	belongs_to :list
 end

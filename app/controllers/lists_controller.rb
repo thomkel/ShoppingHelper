@@ -32,7 +32,7 @@ class ListsController < ApplicationController
   # GET /lists
   # GET /lists.json
   def index
-    @lists = List.where(:user_id => session[:user_id]).order("created_at desc")
+    @lists = List.where(:user_id => session[:user_id])
   end
 
   # GET /lists/1
