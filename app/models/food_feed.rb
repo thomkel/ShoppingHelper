@@ -13,9 +13,9 @@ class FoodFeed < ActiveRecord::Base
 		if self.feed_type == "video"
 			check_video_url
 			check_url_format
+			self.image = "http://www.standwithus.com/images/Play-icon2.png"
 		end
 
-		self.image = "http://www.standwithus.com/images/Play-icon2.png"
 		self.save
 	end
 

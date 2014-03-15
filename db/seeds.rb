@@ -3,6 +3,15 @@
 User.destroy_all
 
 user = User.new
+user.username = "thomkel"
+user.email = "thomkel@example.com"
+user.password = "testpw"
+user.password_confirmation = "testpw"
+user.first_name = "Thomas"
+user.last_name = "Kelly"
+user.save
+
+user = User.new
 user.username = "graciegold"
 user.email = "Gracie@example.com"
 user.password = "heythere"
@@ -18,15 +27,6 @@ user.password = "heythere1"
 user.password_confirmation = "heythere1"
 user.first_name = "Edmund"
 user.last_name = "Fitzgerald"
-user.save
-
-user = User.new
-user.username = "thomkel"
-user.email = "thomkel@example.com"
-user.password = "testpw"
-user.password_confirmation = "testpw"
-user.first_name = "Thomas"
-user.last_name = "Kelly"
 user.save
 
 user = User.new
@@ -190,36 +190,36 @@ end
 
 # create Ingredients
 
-all_bahn_data = [ { :name => "carrot"},
-                  { :name => "daikon"},
-                  { :name => "cider vinegar"},
-                  { :name => "sugar"},
-                  { :name => "kosher salt"},
-                  { :name => "chili garlic salt"},
-                  { :name => "pork tenderloin"},
-                  { :name => "mayonnaise"},
-                  { :name => "cucumber"},
-                  { :name => "cilantro"},
-                  { :name => "green onion"},
-                  { :name => "jalapeno"}
+all_bahn_data = [ { :name => "carrot", :measure => "1 stick"},
+                  { :name => "daikon", :measure => "2 tbps"},
+                  { :name => "cider vinegar", :measure => "2 oz"},
+                  { :name => "sugar", :measure => "2 cubes"},
+                  { :name => "kosher salt", :measure => "3 tsp"},
+                  { :name => "chili garlic salt", :measure => "2 tbsp"},
+                  { :name => "pork tenderloin", :measure => "3 lbs"},
+                  { :name => "mayonnaise", :measure => "1 cup"},
+                  { :name => "cucumber", :measure => "1 whole"},
+                  { :name => "cilantro", :measure => "2 bunches"},
+                  { :name => "green onion", :measure => "1 bag"},
+                  { :name => "jalapeno", :measure => "2 whole"}
                 ]
 
-all_pho_data = [{ :name => "yellow onion"},
-                  { :name => "ginger"},
-                  { :name => "beef bones"},
-                  { :name => "oxtail"},
-                  { :name => "water"},
-                  { :name => "fish sauce"},
-                  { :name => "bay leaves"},
-                  { :name => "cinnamon stick"},
-                  { :name => "black peppercorn"},
-                  { :name => "star anise"},
-                  { :name => "cloves, whole"},
-                  { :name => "rice sticks"},
-                  { :name => "beef tenderloin"},
-                  { :name => "bean sprout"},
-                  { :name => "lime"},
-                  { :name => "thai basil"},
+all_pho_data = [{ :name => "yellow onion", :measure => "2 diced"},
+                  { :name => "ginger", :measure => "1 minced"},
+                  { :name => "beef bones", :measure => "4 whole"},
+                  { :name => "oxtail", :measure => "2 lbs"},
+                  { :name => "water", :measure => "1 gallon"},
+                  { :name => "fish sauce", :measure => "1 cup"},
+                  { :name => "bay leaves", :measure => "4 leaves"},
+                  { :name => "cinnamon stick", :measure => "2 whole"},
+                  { :name => "black peppercorn", :measure => "2 tsp"},
+                  { :name => "star anise", :measure => "a pinch"},
+                  { :name => "cloves, whole", :measure => "4"},
+                  { :name => "rice sticks", :measure => "2"},
+                  { :name => "beef tenderloin", :measure => "5 lbs"},
+                  { :name => "bean sprout", :measure => ".5 lb"},
+                  { :name => "lime", :measure => "3 whole, squeezed"},
+                  { :name => "thai basil", :measure => "5 leaves"},
                 ]
 
 Ingredient.destroy_all
@@ -250,6 +250,7 @@ all_pho_data.each do |ingred_info|
   ingred = Ingredient.find_by(:name => ingred_info[:name])
   f.ingred_id = ingred.id
   f.meal_id = phomeal_id
+  f.measure = ingred_info[:measure]
   f.save
 end
 
@@ -258,6 +259,7 @@ all_bahn_data.each do |ingred_info|
   ingred = Ingredient.find_by(:name => ingred_info[:name])
   f.ingred_id = ingred.id
   f.meal_id = bahnmeal_id
+  f.measure = ingred_info[:measure]
   f.save
 end
 
@@ -284,6 +286,9 @@ bahn_id = bahnlist.id
 #create List Items
 
 # fill Pho List with pho list items
+
+ListItem.destroy_all
+
 all_pho_data.each do |ingred_info|
   f = ListItem.new
   ingred = Ingredient.find_by(:name => ingred_info[:name])
