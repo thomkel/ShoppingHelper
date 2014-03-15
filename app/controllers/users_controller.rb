@@ -29,9 +29,9 @@ class UsersController < ApplicationController
       follow_ids.push(user.leader_id)
     end
 
-    @users = User.where.not(:id => follow_ids)
+    follow_ids.push(session[:user_id])
 
-    # @users = User.where.not(:id => session[:user_id])
+    @users = User.where.not(:id => follow_ids)
 
     render "showall"
   end

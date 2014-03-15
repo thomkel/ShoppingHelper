@@ -164,15 +164,17 @@ end
 
 # create Meals
 
-all_meal_data = [ { :name => "Viet Hapa Phol",
+all_meal_data = [ { :name => "Viet Hapa Pho",
                  :description => "Vietnamese Beef Noodle Soup",
                  :image => "http://img08.foodily.net/img/620x620/ff48f9f59395.jpg",
-                 :user_id => thom_id
+                 :user_id => thom_id,
+                 :url => "http://www.foodily.com/r/82a0efeb6f-viet-hapa-pho-by-food52"
                 },
                 { :name => "Bahn Mi",
                   :description => "Vietnamese Sandwish",
                   :image => "http://img06.foodily.net/img/620x620/55d5bca750c7.jpg",
-                  :user_id => gracie_id
+                  :user_id => gracie_id,
+                  :url => "http://www.foodily.com/r/o83ORQIag-bahn-mi-by-cooking-light"
                 }
             ]
 
@@ -185,6 +187,7 @@ all_meal_data.each do |meal_info|
   f.description = meal_info[:description]
   f.image = meal_info[:image]
   f.user_id = meal_info[:user_id]
+  f.url = meal_info[:url]
   f.save
 end
 
@@ -239,7 +242,7 @@ end
 
 Recipe.destroy_all
 
-phomeal = Meal.find_by(:name => "Viet Hapa Phol")
+phomeal = Meal.find_by(:name => "Viet Hapa Pho")
 phomeal_id = phomeal.id
 
 bahnmeal = Meal.find_by(:name => "Bahn Mi")

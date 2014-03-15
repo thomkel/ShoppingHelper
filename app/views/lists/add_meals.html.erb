@@ -5,7 +5,7 @@
 <% else %>
 	<h3>Items added:</h3>
 	<% @list_items.each do |list_item| %>
-		<p><%= Ingredient.find_by(:id => list_item.ingred_id).name %></p>
+		<p><%= Ingredient.find_by(:id => list_item.ingredient_id).name %></p>
 	<% end %>
 <% end %>
 

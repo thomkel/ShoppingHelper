@@ -4,7 +4,7 @@ class MealsController < ApplicationController
   before_action :require_login, :except => [:home, :login]
   before_action :identify_user
   before_action :validate_creater, only: [:edit, :update, :destroy, :edit_ingreds, 
-      :add_ingreds, :save_new_ingreds, :update_recipe ]
+      :add_ingreds, :save_new_ingreds ]
 
   # implement pagination .limit(#).offset(#)
 
@@ -79,6 +79,7 @@ class MealsController < ApplicationController
   # PATCH/PUT /meals/1.json
   def update
     if @meal.update(meal_params)
+      @meal.user_id = session[:user_id]
       redirect_to "/recipes/#{@meal.id}", notice: 'Meal was successfully updated.' 
     else
       render action: 'edit' 
@@ -149,6 +150,6 @@ class MealsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def meal_params
-      params.require(:meal).permit(:name, :description, :image)
+      params.require(:meal).permit(:name, :description, :image, :url, :user_id)
     end
 end
