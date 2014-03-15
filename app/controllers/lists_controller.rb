@@ -45,6 +45,8 @@ class ListsController < ApplicationController
     @list = List.find_by(:id => listid)
     @listitems = ListItem.where(:list_id => listid)
 
+    # get direction info
+
     if !params[:address].blank? & !params[:city].blank? & !params[:state].blank?
       origin = params[:origin]
       address = params[:address]
@@ -53,13 +55,26 @@ class ListsController < ApplicationController
 
       data = findstore(origin, address, city, state)
 
-      @duration = data["routes"].first["legs"].first["duration"].values_at("text")
-      @distance = data["routes"].first["legs"].first["distance"].values_at("text")
+      @duration = format_trip_info(data["routes"].first["legs"].first["duration"].values_at("text"))
+      @distance = format_trip_info(data["routes"].first["legs"].first["distance"].values_at("text"))
 
-      steps = data["routes"].first["legs"].first["steps"]
+      @instructs = get_steps(data["routes"].first["legs"].first["steps"])
 
+    end
+  end
+
+  def format_duration(trip_info)
+      trip_info = trip_info.to_s
+      trip_info = trip_info.gsub("[", "")
+      trip_info = trip_info.gsub("]", "")
+      trip_info = trip_info.gsub('"', "")
+
+      return trip_info
+  end
+
+  def get_steps(steps)
       steps_size = (steps.length - 1)
-      @instructs = []
+      instructs = []
 
       for i in 0..steps_size
         newstep = steps[i].values_at("html_instructions").to_s
@@ -71,19 +86,13 @@ class ListsController < ApplicationController
         newstep = newstep.gsub(/&lt;[^&]*&gt;/, '')
         newstep = newstep.gsub(/&#39;/, "'")
 
-        @instructs.push(newstep)
+        count = i + 1
+        newstep = count.to_s + ". " + newstep
+
+        instructs.push(newstep)
       end
 
-      @duration = @duration.to_s
-      @duration = @duration.gsub("[", "")
-      @duration = @duration.gsub("]", "")
-      @duration = @duration.gsub('"', "")
-
-      @distance = @distance.to_s
-      @distance = @distance.gsub("[", "")
-      @distance = @distance.gsub("]", "")
-      @distance = @distance.gsub('"', "")
-    end
+      return instructs
   end
 
   # GET /lists/new
@@ -114,6 +123,7 @@ class ListsController < ApplicationController
     @list = List.find_by(:id => params[:id])
     @list_items = ListItem.where(:list_id => @list.id)
     @meals = Meal.where(:user_id => session[:user_id])
+
   end
 
   def add_meal_to_list

@@ -1,23 +1,15 @@
 ShoppingHelper::Application.routes.draw do
   resources :list_items
-
   resources :lists
   resources :meals
   resources :food_feeds
   resources :users
   resources :sessions
 
-  # clean up redundant routes
-
   root "food_feeds#index"
 
-  get "/foodfeed" => "food_feeds#index"
-
-  get "/meals" => "meals#index"
   get "/meals/:id/add" => "meals#add_ingreds"
   post "meals/:id/add" => "meals#save_new_ingreds"
-
-  # get "/lists" => "food_feeds#index" # need to change
 
   get "/endsession" => "sessions#destroy"
 
@@ -34,5 +26,4 @@ ShoppingHelper::Application.routes.draw do
   post "/addmeals/:id" => "lists#add_meal_to_list"
 
   post "lists/:id" => "lists#show"
-  
 end

@@ -26,28 +26,20 @@ class ListItemsController < ApplicationController
   def create
     @list_item = ListItem.new(list_item_params)
 
-    respond_to do |format|
-      if @list_item.save
-        format.html { redirect_to @list_item, notice: 'List item was successfully created.' }
-        format.json { render action: 'show', status: :created, location: @list_item }
-      else
-        format.html { render action: 'new' }
-        format.json { render json: @list_item.errors, status: :unprocessable_entity }
-      end
+    if @list_item.save
+      redirect_to @list_item, notice: 'List item was successfully created.' 
+    else
+      render action: 'new' 
     end
   end
 
   # PATCH/PUT /list_items/1
   # PATCH/PUT /list_items/1.json
   def update
-    respond_to do |format|
-      if @list_item.update(list_item_params)
-        format.html { redirect_to @list_item, notice: 'List item was successfully updated.' }
-        format.json { head :no_content }
-      else
-        format.html { render action: 'edit' }
-        format.json { render json: @list_item.errors, status: :unprocessable_entity }
-      end
+    if @list_item.update(list_item_params)
+      redirect_to @list_item, notice: 'List item was successfully updated.' 
+    else
+      render action: 'edit' 
     end
   end
 
@@ -55,10 +47,7 @@ class ListItemsController < ApplicationController
   # DELETE /list_items/1.json
   def destroy
     @list_item.destroy
-    respond_to do |format|
-      format.html { redirect_to list_items_url }
-      format.json { head :no_content }
-    end
+    redirect_to list_items_url 
   end
 
   private

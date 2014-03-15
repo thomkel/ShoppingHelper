@@ -29,8 +29,6 @@ class FoodFeedsController < ApplicationController
     end
   end
 
-
-
   # GET /food_feeds
   # GET /food_feeds.json
   def index 
@@ -59,26 +57,22 @@ class FoodFeedsController < ApplicationController
     @food_feed.feed_type = params[:feed_type]
     @food_feed.create_user_id = session[:user_id]
 
-    respond_to do |format|
-      if @food_feed.save
-        format.html { redirect_to @food_feed, notice: 'Food feed was successfully created.' }
-      else
-        format.html { render action: 'new' }
-      end
+    if @food_feed.save
+        redirect_to @food_feed, notice: 'Food feed was successfully created.'
+    else
+      render action: 'new'
     end
   end
 
   # PATCH/PUT /food_feeds/1
   # PATCH/PUT /food_feeds/1.json
   def update
-    respond_to do |format|
-      if @food_feed.update(food_feed_params)
-        @food_feed.feed_type = params[:feed_type]
-        @food_feed.save
-        format.html { redirect_to @food_feed, notice: 'Food feed was successfully updated.' }
-      else
-        format.html { render action: 'edit' }
-      end
+    if @food_feed.update(food_feed_params)
+      @food_feed.feed_type = params[:feed_type]
+      @food_feed.save
+      redirect_to @food_feed, notice: 'Food feed was successfully updated.' 
+    else
+      render action: 'edit' 
     end
   end
 
@@ -86,10 +80,7 @@ class FoodFeedsController < ApplicationController
   # DELETE /food_feeds/1.json
   def destroy
     @food_feed.destroy
-    respond_to do |format|
-      format.html { redirect_to food_feeds_url }
-      format.json { head :no_content }
-    end
+    redirect_to food_feeds_url 
   end
 
   private

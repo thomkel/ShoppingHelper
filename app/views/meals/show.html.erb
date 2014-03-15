@@ -1,22 +1,14 @@
-<p id="notice"><%= notice %></p>
+<p><strong><%= @meal.name + " - " + @meal.description %></strong></p>
 
-<p>
-  <strong><%= @meal.name + " - " + @meal.description %></strong>
-<p>
-	<% @ingreds.each do |ingred| %>
+<p><% @ingreds.each do |ingred| %>
 		<%= Ingredient.find_by(:id => ingred.ingred_id).name %>- 
 		<%= ingred.measure %>
 		<br>
-	<% end %>
-</p>
+	<% end %></p>
 
-<p>
-  <%= image_tag @meal.image %>
-</p>
+<p><%= image_tag @meal.image %></p>
 
-<p>
-<% if @meal.user_id == session[:user_id] %>
+<p><% if @meal.user_id == session[:user_id] %>
 	<%= link_to 'Edit', edit_meal_path(@meal) %> | 
 <% end %>
-	<%= link_to 'Back', meals_path %>
-</p>
+	<%= link_to 'Back', meals_path %></p>

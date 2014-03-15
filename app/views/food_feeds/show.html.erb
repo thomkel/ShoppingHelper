@@ -1,23 +1,10 @@
 <br><br>
-<p>
-  <strong><%= @food_feed.feed_type %></strong>
-</p>
+<p><strong><%= @food_feed.feed_type %></strong></p>
 
-<p>
-  <%= @food_feed.title %>
-</p>
-
-<p>
-  <%= @food_feed.description %>
-</p>
-
-<p>
-  <%= link_to @food_feed.url %>
-</p>
-
-<p>
-  <%= image_tag @food_feed.image, size: "420x325" %>
-</p>
+<p><%= @food_feed.title %></p>
+<p><%= @food_feed.description %></p>
+<p><%= link_to @food_feed.url %></p>
+<p><%= image_tag @food_feed.image, size: "420x325" %></p>
 
 <%= link_to 'Edit', edit_food_feed_path(@food_feed) %> |
 <%= link_to 'Back', food_feeds_path %>

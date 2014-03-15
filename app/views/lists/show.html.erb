@@ -16,12 +16,9 @@
   <%= @distance %>
   <br><br>
 
-  <% count = 1 %>
-
   <% @instructs.each do |step| %>
-  	<%= count.to_s + ". " + step %>
+  	<%= step %>
   	<br>
-  	<% count = count + 1 %>
   <% end %>
   <br>
 <% end %>

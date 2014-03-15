@@ -1,20 +1,20 @@
 <h1>Edit User Info</h1>
 
-	<% @user = User.find_by(:id => session[:user_id]) %>
+<% @user = User.find_by(:id => session[:user_id]) %>
 
-	<%= form_tag "/users/#{@user.id}", :method => 'patch' do %>
-		<strong><%= @user.username %>:</strong>
-		<br><br>
-		<div class="field">
-		  <%= label_tag :first_name %>
-		  <%= text_field_tag :first_name%>
-		</div>	
-		<div class="field">
-		  <%= label_tag :last_name %>
-		  <%= text_field_tag :last_name%>
-		</div>	
-		<div class="actions">
-			<%= submit_tag "Save Changes" %>
-		</div>
-		<br>
-	<% end %>
+<%= form_tag "/users/#{@user.id}", :method => 'patch' do %>
+	<strong><%= @user.username %>:</strong>
+	<br><br>
+	<div class="field">
+	  <%= label_tag :first_name %>
+	  <%= text_field_tag :first_name%>
+	</div>	
+	<div class="field">
+	  <%= label_tag :last_name %>
+	  <%= text_field_tag :last_name%>
+	</div>	
+	<div class="actions">
+		<%= submit_tag "Save Changes" %>
+	</div>
+	<br>
+<% end %>

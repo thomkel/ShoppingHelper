@@ -62,12 +62,10 @@ class MealsController < ApplicationController
     @meal = Meal.new(meal_params)
     @meal.user_id = session[:user_id]
 
-    respond_to do |format|
-      if @meal.save
-        format.html { redirect_to "/meals/#{@meal.id}/add", notice: 'Meal was successfully created.' }
-      else
-        format.html { render action: 'new' }
-      end
+    if @meal.save
+      redirect_to "/meals/#{@meal.id}/add", notice: 'Meal was successfully created.' 
+    else
+      render action: 'new' 
     end
   end
 
@@ -80,12 +78,10 @@ class MealsController < ApplicationController
   # PATCH/PUT /meals/1
   # PATCH/PUT /meals/1.json
   def update
-    respond_to do |format|
-      if @meal.update(meal_params)
-        format.html { redirect_to "/recipes/#{@meal.id}", notice: 'Meal was successfully updated.' }
-      else
-        format.html { render action: 'edit' }
-      end
+    if @meal.update(meal_params)
+      redirect_to "/recipes/#{@meal.id}", notice: 'Meal was successfully updated.' 
+    else
+      render action: 'edit' 
     end
   end
 
@@ -116,7 +112,7 @@ class MealsController < ApplicationController
       #check if Ingredient already in database
       #if not, create new ingredient
 
-      ingredname = Ingredient.find_by(:name => ingreds[i])
+      ingredname = Ingredient.find_by(:name => ingreds[i].downcase)
 
       if ingredname.blank?
         @ingred = Ingredient.new
@@ -142,10 +138,7 @@ class MealsController < ApplicationController
   # DELETE /meals/1.json
   def destroy
     @meal.destroy
-    respond_to do |format|
-      format.html { redirect_to meals_url }
-      format.json { head :no_content }
-    end
+    redirect_to meals_url 
   end
 
   private
