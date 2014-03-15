@@ -1,5 +1,5 @@
 <h1>Food Feed</h1>
-<p><%= link_to 'Post New Food Feed', new_food_feed_path %></p><br>
+<p><%= button_to 'Post New Food Feed', new_food_feed_path, method: :get %></p><br>
 
 
     <% @food_feeds.each do |food_feed| %>
@@ -18,8 +18,7 @@
         <% end %>
         <p><%= food_feed.description %></p>
         <% if food_feed.create_user_id == session[:user_id] %>
-	        <p><%= link_to 'Edit', edit_food_feed_path(food_feed) %></p>
-	        <p><%= link_to 'Destroy', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
+	        <p><%= link_to 'Delete FoodFeed', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
 	   	<% end %>
 	   	<br><br>
     <% end %>

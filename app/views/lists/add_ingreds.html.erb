@@ -1,0 +1,17 @@
+<h1>Add Ingredients to List</h1>
+
+<%= form_tag "/add/lists/#{params[:id]}", :method => 'post' do %>
+	<% for i in 1..10 %>
+		<% ingredsym = "ingred" + i.to_s %>
+
+		<div class="field">
+		  <%= label_tag "#{ingredsym}" %>
+		  <%= text_field_tag "#{ingredsym}" %>
+		</div>	
+		<br>
+	<% end %>
+	<div class="actions">
+		<%= submit_tag "Save New Ingredients" %>
+	</div>
+	<br>
+<% end %>

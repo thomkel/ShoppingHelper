@@ -58,7 +58,7 @@ class FoodFeedsController < ApplicationController
     @food_feed.create_user_id = session[:user_id]
 
     if @food_feed.save
-        redirect_to @food_feed, notice: 'Food feed was successfully created.'
+        redirect_to food_feeds_path, notice: 'Food feed was successfully created.'
     else
       render action: 'new'
     end

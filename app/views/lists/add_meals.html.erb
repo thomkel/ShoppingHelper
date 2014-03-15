@@ -17,3 +17,6 @@
     <p><%= button_to 'Add Meal to List', "/addmeals/#{@list.id}?meal=#{meal.id}", method: :post %></p>
     <br>
 <% end %>
+<br>
+<%= link_to "Add additional ingredients", "/addingreds/lists/#{@list.id}" %>
+

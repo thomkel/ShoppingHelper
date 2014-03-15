@@ -122,7 +122,7 @@ class ListsController < ApplicationController
   def add_meals
     @list = List.find_by(:id => params[:id])
     @list_items = ListItem.where(:list_id => @list.id)
-    @meals = Meal.where(:user_id => session[:user_id])
+    @meals = Meal.where(:user_id => [session[:user_id], session[:users_followed]])
 
   end
 
@@ -146,6 +146,50 @@ class ListsController < ApplicationController
 
     redirect_to "/addmeals/#{list.id}"
 
+  end
+
+  def add_ingreds
+  end
+
+  def add_ingreds_to_list
+    list = List.find_by(:id => params[:id])
+    list_items = ListItem.where(:list_id => list.id)
+
+    ingreds = [ params[:ingred1], params[:ingred2], params[:ingred3], 
+      params[:ingred4], params[:ingred5], params[:ingred6], params[:ingred7],
+        params[:ingred8], params[:ingred9], params[:ingred10] ]
+
+    for i in 0..9
+      if ingreds[i].blank?
+        break
+      end
+
+      #check if Ingredient already in database
+      #if not, create new ingredient
+
+      ingredname = Ingredient.find_by(:name => ingreds[i].downcase)
+
+      if ingredname.blank?
+        @ingred = Ingredient.new
+        @ingred.name = ingreds[i].downcase
+        @ingred.save
+      else
+        @ingred = ingredname
+      end
+
+      #check if ingred already in list
+
+      check_list = list_items.where(:ingredient_id => @ingred.id)
+
+      if check_list.blank?
+        listitem = ListItem.new
+        listitem.ingredient_id = @ingred.id
+        listitem.list_id = list.id
+        listitem.save
+      end
+    end
+
+    redirect_to lists_path, notice: "List successfully updated"      
   end
 
   def findstore(base, address, city, state)

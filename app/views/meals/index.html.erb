@@ -1,27 +1,30 @@
 <h1>Meals</h1>
 
-	<h3>Your meals:</h3>
+    <br><%= button_to 'Create New Meal/Recipe', new_meal_path %><br>
 
     <% @meals.each do |meal| %>
-        <p><b><%= link_to meal.name, meal_path(meal.id) %></b></p>
-        <p><%= meal.description %></p>
-        <p><%= link_to "link to meal", meal.url %></p>        
+        <p><b><%= link_to meal.name, meal_path(meal.id) %>           <% if !meal.url.blank? %>
+                -- <%= link_to "link to meal", meal.url %></b>
+            <% end %>
+        </p>
+        <p><%= meal.description %></p>      
         <p><%= image_tag meal.image, size:"420x325"%></p>
         <p><%= link_to 'Edit', edit_meal_path(meal) %> | 
             <%= link_to 'Destroy', meal, method: :delete, data: { confirm: 'Are you sure?' } %></p>
         <br>
     <% end %>
 
-    <%= link_to 'Create New Meal/Recipe', new_meal_path %>
-
     <h3>Food Friend meals:</h3>
 
     <% @friend_meals.each do |meal| %>
     	<% user = User.find_by(:id => meal.user_id) %>
-    	<p>Created by <%= user.username %>:</p>
-        <p><b><%= link_to meal.name, meal_path(meal.id) %></b></p>
+    	<p>Created by <%= user.username %>: <b><%= link_to meal.name + " (see recipe)", meal_path(meal.id) %> 
+
+            <% if !meal.url.blank? %>
+                -- <%= link_to "link to meal", meal.url %></b>
+            <% end %>
+        </p>
         <p><%= meal.description %></p>
-        <p><%= link_to "link to meal", meal.url %></p>        
         <p><%= image_tag meal.image, size:"420x325"%></p>
         <br>
     <% end %>

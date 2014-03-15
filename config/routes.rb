@@ -9,7 +9,7 @@ ShoppingHelper::Application.routes.draw do
   root "food_feeds#index"
 
   get "/meals/:id/add" => "meals#add_ingreds"
-  post "meals/:id/add" => "meals#save_new_ingreds"
+  post "/meals/:id/add" => "meals#save_new_ingreds"
 
   get "/endsession" => "sessions#destroy"
 
@@ -18,12 +18,14 @@ ShoppingHelper::Application.routes.draw do
   post "/follow" => "users#follow"
 
   get "/recipes/:id" => "meals#edit_ingreds"
-  patch "recipes/:id" => "meals#update_recipe"
+  patch "/recipes/:id" => "meals#update_recipe"
 
   delete "/users/follows/:id" => "users#delete_follows"
 
   get "/addmeals/:id" => "lists#add_meals"
   post "/addmeals/:id" => "lists#add_meal_to_list"
 
-  post "lists/:id" => "lists#show"
+  post "/lists/:id" => "lists#show"
+  get "/addingreds/lists/:id" => "lists#add_ingreds"
+  post "/add/lists/:id" => "lists#add_ingreds_to_list"
 end

@@ -14,11 +14,11 @@ class User < ActiveRecord::Base
 
  	has_secure_password
 
-  has_many :lists
-  has_many :meals
-  has_many :food_feeds, foreign_key: :create_user_id
-  has_many :follows, foreign_key: :leader_id
-  has_many :follows, foreign_key: :follower_id
+  has_many :lists, dependent: :destroy
+  has_many :meals #won't destroy... other users may want to access
+  has_many :food_feeds, foreign_key: :create_user_id, dependent: :destroy
+  has_many :follows, foreign_key: :leader_id, dependent: :destroy
+  has_many :follows, foreign_key: :follower_id, dependent: :destroy
   # has_many :list_items, through: :lists
 
   after_create :add_friend
