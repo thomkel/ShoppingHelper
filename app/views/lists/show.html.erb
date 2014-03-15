@@ -11,18 +11,20 @@
 
 <h3>Directions to Store</h3>
 
-<%= @duration %>
-<%= @distance %>
-<br><br>
+<% if !@instructs.blank? %>
+  <%= @duration %>
+  <%= @distance %>
+  <br><br>
 
-<% count = 1 %>
+  <% count = 1 %>
 
-<% @instructs.each do |step| %>
-	<%= count.to_s + ". " + step %>
-	<br>
-	<% count = count + 1 %>
+  <% @instructs.each do |step| %>
+  	<%= count.to_s + ". " + step %>
+  	<br>
+  	<% count = count + 1 %>
+  <% end %>
+  <br>
 <% end %>
-<br>
 
 <%= form_tag "/lists/#{@list.id}", method: :post do %>
   <div class="field">
