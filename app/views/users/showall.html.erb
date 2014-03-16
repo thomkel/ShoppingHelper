@@ -9,7 +9,9 @@
 		<% user = User.find_by(:id => follow.leader_id) %>
 		<p><strong><%= user.username %></strong></p>
 		<p><%= user.first_name + " " + user.last_name %></p>
+		<% if user.username != "thomkel" %>
 		<%= button_to "Stop Following", "/users/follows/#{user.id}", :method => :delete %>
+		<% end %>
 		<br><br><br>
 	<% end %>
 <% end %>

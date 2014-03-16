@@ -29,9 +29,7 @@ class UsersController < ApplicationController
       follow_ids.push(user.leader_id)
     end
 
-    follow_ids.push(session[:user_id])
-
-    @users = User.where.not(:id => follow_ids)
+    @users = User.where.not(:id => [follow_ids, session[:user_id]])
 
     render "showall"
   end
@@ -46,12 +44,15 @@ class UsersController < ApplicationController
   def delete_follows
     @follows = Follow.where(:follower_id => session[:user_id])
 
-    @follows.find_by(:leader_id => params[:id]).destroy
+    thomkel = User.find_by(:username => "thomkel")
 
-    session[:users_followed].delete(params[:id].to_i)
-
-    redirect_to "/findusers", notice: "No longer following #{User.find_by(:id => params[:id]).username}"
-
+    if params[:id] != thomkel.id
+      @follows.find_by(:leader_id => params[:id]).destroy
+      session[:users_followed].delete(params[:id].to_i)
+      redirect_to "/findusers", notice: "No longer following #{User.find_by(:id => params[:id]).username}"
+    else
+      redirect_to "/findusers", notice: "Cannot unfriend the creator, thomkel"
+    end
   end
 
   def create

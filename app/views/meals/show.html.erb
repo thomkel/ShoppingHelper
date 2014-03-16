@@ -9,6 +9,6 @@
 <p><%= image_tag @meal.image %></p>
 
 <p><% if @meal.user_id == session[:user_id] %>
-	<%= link_to 'Edit', edit_meal_path(@meal) %> | 
-<% end %>
+		<%= link_to 'Edit', edit_meal_path(@meal) %> | 
+	<% end %>
 	<%= link_to 'Back', meals_path %></p>

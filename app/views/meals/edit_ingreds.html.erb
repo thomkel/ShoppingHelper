@@ -4,17 +4,17 @@
 	<% @recipes.each do |recipe| %>
 		<% @ingred = Ingredient.find_by(:id => recipe.ingred_id) %>
 		<div class="field">
-		  <%= label_tag @ingred.name %>
+		  <h3><%= @ingred.name %></h3>
 		</div>	
 		<div class="field">
 		  <%= label_tag :measure %>
 		  <%= text_field_tag "#{recipe.id}", recipe.measure %>
 		  <%= link_to 'Delete?', "/recipes/update/#{params[:id]}?recipeid=#{recipe.id}", method: :delete %>
-		</div><br> 
+		</div>
 	<% end %>
 		<div class="actions">
 			<%= submit_tag "Save Changes" %>
 		</div><br>	
 <% end %>	
 
-<%= link_to "Add more ingredients", "/meals/#{params[:id]}/add" %>
+<%= button_to "Add more ingredients", "/meals/#{params[:id]}/add", method: :get %>

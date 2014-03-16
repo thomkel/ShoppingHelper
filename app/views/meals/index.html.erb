@@ -13,7 +13,7 @@
             <p><%= image_tag meal.image, size:"420x325"%></p>
         <% end %>
 
-        <p><%= link_to 'Edit', edit_meal_path(meal) %> | 
+        <p><%= link_to 'Edit Main Info', edit_meal_path(meal) %> | <%= link_to 'Edit Ingredients', "/recipes/#{meal.id}" %> | 
             <%= link_to 'Destroy', meal, method: :delete, data: { confirm: 'Are you sure?' } %></p><br>
     <% end %>
 
