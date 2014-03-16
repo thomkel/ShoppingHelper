@@ -68,6 +68,19 @@ class ListsController < ApplicationController
     end
   end
 
+  def edit_ingreds
+    listid = params[:id]
+    @list = List.find_by(:id => listid)
+    @listitems = ListItem.where(:list_id => listid)
+  end
+
+  def delete_ingred
+    listitem = ListItem.find_by(:id => params[:item_id])
+    listitem.destroy
+
+    redirect_to "/lists/edit/#{params[:id]}", notice: "Ingredient Deleted"
+  end
+
   def findstore(base, address, city, state)
     origin = base
     origin = origin.gsub(' ', '+')

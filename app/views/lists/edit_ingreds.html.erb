@@ -1,0 +1,8 @@
+<h1>Edit List Ingredients</h1>
+
+<ul>
+	<% @listitems.each do |item| %>
+		<li><%= Ingredient.find_by(:id => item.ingredient_id).name %>
+			<%= button_to "Delete Ingredient", "#{@list.id}?item_id=#{item.id}", method: :delete %></li><br>
+	<% end %>
+</ul>

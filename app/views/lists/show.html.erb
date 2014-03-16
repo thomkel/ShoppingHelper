@@ -6,7 +6,9 @@
 	<% end %>
 </ul>
 
-<%= link_to 'Edit', edit_list_path(@list) %> |
+<%= link_to 'Edit Main Info', edit_list_path(@list) %> |
+<%= link_to 'Add Ingredients', "/addmeals/#{@list.id}" %> |  
+<%= link_to 'Edit Ingredients', "/lists/edit/#{@list.id}" %> | 
 <%= link_to 'Back', lists_path %>
 
 <h3>Directions to Store</h3>

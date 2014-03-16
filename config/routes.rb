@@ -26,7 +26,9 @@ ShoppingHelper::Application.routes.draw do
   get "/addmeals/:id" => "lists#add_meals"
   post "/addmeals/:id" => "lists#add_meal_to_list"
 
-  post "/lists/:id" => "lists#show"
   get "/addingreds/lists/:id" => "lists#add_ingreds"
+  get "/lists/edit/:id" => "lists#edit_ingreds"
   post "/add/lists/:id" => "lists#add_ingreds_to_list"
+  post "/lists/:id" => "lists#show"
+  delete "lists/edit/:id" => "lists#delete_ingred"
 end
