@@ -96,6 +96,14 @@ class MealsController < ApplicationController
     redirect_to meals_path, notice: "Recipe successfully updated"
   end
 
+  def delete_recipe
+    recipeid = params[:recipeid].to_i
+    dele_recipe = Recipe.find_by(:id => recipeid)
+    dele_recipe.destroy
+
+    redirect_to meals_path, notice: "Recipe successfully updated"    
+  end
+
   def add_ingreds
   end
 

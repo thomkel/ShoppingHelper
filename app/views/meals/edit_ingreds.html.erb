@@ -9,7 +9,8 @@
 		<div class="field">
 		  <%= label_tag :measure %>
 		  <%= text_field_tag "#{recipe.id}", recipe.measure %>
-		</div>	<br>
+		  <%= link_to 'Delete?', "/recipes/update/#{params[:id]}?recipeid=#{recipe.id}", method: :delete %>
+		</div><br> 
 	<% end %>
 		<div class="actions">
 			<%= submit_tag "Save Changes" %>
