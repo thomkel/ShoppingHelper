@@ -6,23 +6,15 @@ application up and running.
 Things you may want to cover:
 
 * Ruby version
-
-* System dependencies
-
-* Configuration
+ruby 2.1.1p76 (2014-02-24 revision 45161) [i686-linux]
 
 * Database creation
+postgresql-- originally backed with SQLLite, but migrated database to support deployment to Heroku
 
-* Database initialization
+* Features
+When viewing a created list, can pull directions to three different grocery store locations. Pull data from Google Maps API.
 
-* How to run the test suite
-
-* Services (job queues, cache servers, search engines, etc.)
-
-* Deployment instructions
-
-* ...
-
+Deployed to Heroku. URL: http://shoppinghelper.herokuapp.com/
 
 Please feel free to use a different markup language if you do not plan to run
 <tt>rake doc:app</tt>.
