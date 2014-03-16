@@ -9,6 +9,8 @@
 	<% end %>
 <% end %>
 
+<%= button_to "Add additional ingredients", "/addingreds/lists/#{@list.id}", method: :get %><br>
+
 <h3>Meals you can add</h3>
 <% @meals.each do |meal| %>
     <p><b><%= link_to meal.name, meal_path(meal.id) %></b></p>
@@ -17,6 +19,5 @@
     <p><%= button_to 'Add Meal to List', "/addmeals/#{@list.id}?meal=#{meal.id}", method: :post %></p>
     <br>
 <% end %>
-<br>
-<%= link_to "Add additional ingredients", "/addingreds/lists/#{@list.id}" %>
+
 

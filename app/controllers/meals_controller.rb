@@ -71,8 +71,6 @@ class MealsController < ApplicationController
 
   def edit_ingreds
     @recipes = Recipe.where(:meal_id => params[:id])
-
-    
   end
 
   # PATCH/PUT /meals/1
@@ -87,9 +85,13 @@ class MealsController < ApplicationController
   end
 
   def update_recipe
-    recipe = Recipe.find_by(:id => params[:id])
-    recipe.measure = params[:measure]
-    recipe.save
+    @recipes = Recipe.where(:meal_id => params[:id])
+
+    @recipes.each do |recipe|
+      recipeid = recipe.id.to_s
+      recipe.measure = params[recipeid]
+      recipe.save
+    end
 
     redirect_to meals_path, notice: "Recipe successfully updated"
   end

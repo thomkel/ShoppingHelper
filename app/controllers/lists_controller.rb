@@ -47,6 +47,10 @@ class ListsController < ApplicationController
 
     # get direction info
 
+    address = params[:address]
+    city = params[:city]
+    state = params[:state]
+
     if !params[:address].blank? & !params[:city].blank? & !params[:state].blank?
       origin = params[:origin]
       address = params[:address]
@@ -55,15 +59,33 @@ class ListsController < ApplicationController
 
       data = findstore(origin, address, city, state)
 
-      @duration = format_trip_info(data["routes"].first["legs"].first["duration"].values_at("text"))
-      @distance = format_trip_info(data["routes"].first["legs"].first["distance"].values_at("text"))
-
-      @instructs = get_steps(data["routes"].first["legs"].first["steps"])
+      if data["status"] == "OK"
+        @duration = format_trip_info(data["routes"].first["legs"].first["duration"].values_at("text"))
+        @distance = format_trip_info(data["routes"].first["legs"].first["distance"].values_at("text"))
+        @instructs = get_steps(data["routes"].first["legs"].first["steps"])
+      end
 
     end
   end
 
-  def format_duration(trip_info)
+  def findstore(base, address, city, state)
+    origin = base
+    origin = origin.gsub(' ', '+')
+
+    destination = address + "+" + city + "+" + state
+    destination = destination.gsub(' ', '+')
+
+    url = "http://maps.googleapis.com/maps/api/directions/json?origin=#{origin}&destination=#{destination}&sensor=false"
+
+    url = url.gsub("\n", '')
+
+    json_data = open(url).read
+    data = JSON.parse(json_data)
+    return data
+
+  end  
+
+  def format_trip_info(trip_info)
       trip_info = trip_info.to_s
       trip_info = trip_info.gsub("[", "")
       trip_info = trip_info.gsub("]", "")
@@ -190,23 +212,6 @@ class ListsController < ApplicationController
     end
 
     redirect_to lists_path, notice: "List successfully updated"      
-  end
-
-  def findstore(base, address, city, state)
-    origin = base
-    origin = origin.gsub(' ', '+')
-
-    destination = address + "+" + city + "+" + state
-    destination = destination.gsub(' ', '+')
-
-    url = "http://maps.googleapis.com/maps/api/directions/json?origin=#{origin}&destination=#{destination}&sensor=false"
-
-    url = url.gsub("\n", '')
-
-    json_data = open(url).read
-    data = JSON.parse(json_data)
-    return data
-
   end
 
   # PATCH/PUT /lists/1
