@@ -144,7 +144,7 @@ all_feed_data = [ { :title => "Baked Herb Pistachio Falafel",
                 { :title => "Gene & Judes Hot Dog",
                   :description => "Genes & Judes > Superdawg",
                   :url => nil,
-                  :image => "http://windycitysole.com/blog/wp-content/uploads/2012/02/image-2.jpeg",
+                  :image => "http://www.seriouseats.com/images/sro-geneandjudes-14.jpg",
                   :feed_type => "image",
                   :create_user_id => thom_id                
                 }

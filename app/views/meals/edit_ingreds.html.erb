@@ -1,5 +1,7 @@
 <h1>Edit Ingredients</h1>
 
+<%= button_to "Add more ingredients", "/meals/#{params[:id]}/add", method: :get %>
+
 <%= form_tag "/recipes/update/#{params[:id]}", :method => 'patch' do %>
 	<% @recipes.each do |recipe| %>
 		<% @ingred = Ingredient.find_by(:id => recipe.ingred_id) %>
@@ -17,4 +19,4 @@
 		</div><br>	
 <% end %>	
 
-<%= button_to "Add more ingredients", "/meals/#{params[:id]}/add", method: :get %>
+<%= link_to "Back", "/meals/#{params[:id]}" %>

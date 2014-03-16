@@ -6,3 +6,5 @@
 			<%= button_to "Delete Ingredient", "#{@list.id}?item_id=#{item.id}", method: :delete %></li><br>
 	<% end %>
 </ul>
+
+<%= link_to 'Back', "/lists/#{params[:id]}" %>

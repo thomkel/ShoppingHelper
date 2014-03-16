@@ -20,9 +20,8 @@
         <% if food_feed.create_user_id == session[:user_id] %>
 	        <p><%= link_to 'Delete FoodFeed', food_feed, method: :delete, data: { confirm: 'Are you sure?' } %></p>
 	   	<% end %>
-	   	<br><br>
     <% end %>
 
 <br>
 
-<%= link_to 'Post New Food Feed', new_food_feed_path %>
+<p><%= button_to 'Create New Food Feed', new_food_feed_path, method: :get %></p><br>
