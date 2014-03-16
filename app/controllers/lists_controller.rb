@@ -231,6 +231,9 @@ class ListsController < ApplicationController
   # PATCH/PUT /lists/1.json
   def update
     if @list.update(list_params)
+      @list.name = params[:name]
+      @list.save
+
       redirect_to "/addmeals/#{@list.id}", notice: 'List was successfully updated.'
     else
       render action: 'edit' 
